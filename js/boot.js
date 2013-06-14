@@ -19,7 +19,15 @@ function getUserWall(accessToken) {
     function(data) {
         glbdata = data;
         browse(data);
-    },"json");
+    },"json")
+    .error(function(ajaxObj) {
+        var e = ajaxObj.responseJSON;
+        if(e&&e.error&&e.error.type&&e.error.type==="OAuthException") {
+          gotoAuthPage();
+        } else {
+          alert("Unknown error, we are working on fixing it, please be patient");
+        }
+      });
 }
 
 function browse(page) {
@@ -79,7 +87,15 @@ function likeIt(post) {
       function(data) {
         if(data) incrementLikeCount();
         else failedLikeCount();
-      },"json");
+      },"json")
+      .error(function(e) {
+        failedLikeCount();
+      });
+}
+
+function gotoAuthPage() {
+  byId('content').innerHTML = "Click <a href='./accessToken.php'>here</a>"
+    + " to authenticate your account";
 }
 
 function comment(post) {
@@ -87,7 +103,10 @@ function comment(post) {
       function(data) {
         if(data.id) incrementCommentCount();
         else failedCommentCount();
-      }, "json");
+      }, "json")
+      .error(function(e) {
+        failedLikeCount();
+      });
 }
 
 function incrementLiked() {
@@ -115,8 +134,7 @@ function failedCommentCount() {
 }
 parseForGetVars();
 if(!getVars.access_token) {
-  byId('content').innerHTML = "Click <a href='./accessToken.php'>here</a>"
-    + " to authenticate your account";
+  gotoAuthPage();
 } else {
   getUserWall(getVars.access_token);
 }

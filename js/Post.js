@@ -9,7 +9,7 @@ Post.prototype.getHTMLNode = function() {
 }
 
 Post.prototype.render = function() {
-	var jnode = $("<div><input type='checkbox' /><label>"+this.getLabel()+"</label></div>");
+	var jnode = $("<tr><td><label><input type='checkbox' />"+this.getLabel()+"</label></td></tr>");
 	return jnode[0];
 }
 
@@ -20,6 +20,14 @@ Post.prototype.getLabel = function() {
 
 Post.prototype.isChecked = function() {
 	return $("input",this.domNode).is(":checked");
+}
+
+Post.prototype.check = function() {
+	$("input",this.domNode).prop('checked',true);
+}
+
+Post.prototype.uncheck = function() {
+	$("input",this.domNode).prop('checked',false);
 }
 
 Post.prototype.like = function() {

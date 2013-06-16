@@ -46,6 +46,22 @@ var fbApp = {
 			}   
 		}); 
 	},
+	selectAll: function() {
+		$.each(this.posts,function(index,post) {
+			post.check();
+		});
+	},
+	selectNone: function() {
+		$.each(this.posts,function(index,post) {
+			post.uncheck();
+		});
+	},
+	invertSelection: function() {
+		$.each(this.posts,function(index,post) {
+			if(post.isChecked()) post.uncheck();
+			else post.check();
+		});
+	},
 	likeAndComment: function() {
 		var shouldLike = !!$("#likeCheckbox").is(':checked'),
 			shouldComment = $("#commentCheckbox").is(':checked'),
@@ -64,18 +80,10 @@ var fbApp = {
 		});
 	},
 	like: function(postId) {
-		this.queue.push($.get("https://graph.facebook.com/"+postId+"/likes?method=POST&format=json&access_token="+this.accessToken,
-			function(data) {
-				if(data) incrementLikeCount();
-				else failedLikeCount();
-			},"json"));
+		this.queue.push($.get("https://graph.facebook.com/"+postId+"/likes?method=POST&format=json&access_token="+this.accessToken));
 	},
 	comment: function(postId,comment) {
 		comment = encodeURIComponent(comment);
-		this.queue.push($.get("https://graph.facebook.com/"+postId+"/comments?method=POST&message="+comment+"&format=json&access_token="+this.accessToken,
-			function(data) {
-				if(data.id) incrementCommentCount();
-				else failedCommentCount();
-			}, "json"));
+		this.queue.push($.get("https://graph.facebook.com/"+postId+"/comments?method=POST&message="+comment+"&format=json&access_token="+this.accessToken));
 	}
 }

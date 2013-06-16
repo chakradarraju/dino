@@ -1,30 +1,42 @@
 <html>
   <head>
     <title>Facebook block comment</title>
+    <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <style>
+      input[type=checkbox] {
+        margin-right: 5px;
+      }
+    </style>
   </head>
   <body>
 
-    <div id='content'>
-	  <div id='postlist'></div>
-    <input type="button" onclick="fbApp.getMorePosts()" value="Get More Posts" /><br/>
-    <div style="display:none">
-      Comment count: <span id='commentCount'>0</span><br/>
-      Like count: <span id='likeCount'>0</span><br/>
-      Already Commented: <span id='alreadyCommentedCount'>0</span><br/>
-      Already Liked: <span id='alreadyLikedCount'>0</span><br/>
-      Failed Comment count: <span id='fcommentCount'>0</span><br/>
-      Failed Like count: <span id='flikeCount'>0</span><br/>
-    </div>
-    <form id="likeAndComment">
-      <input type='checkbox' checked="checked" id='likeCheckbox' /> Like<br/>
-      <input type='checkbox' id='commentCheckbox' /><input id='commentBox' /><br/>
-      <input type='submit' id='applyBtn' value='Apply' /><br/>
-    </form> 
-    <div id='log'></div>
+    <div class='container'>
+      <div class="row span12" style="border: black 2px;">
+        <div class="hero">
+          <h1><p class="text-center">Dino</p></h1>
+        </div>
+      </div>
+      <div class="row span12s">
+        <div class="span3">
+          <form id="likeAndComment">
+            <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
+            <label><input type='checkbox' id='commentCheckbox' /><input id='commentBox' class="span2" /></label>
+            <input type='submit' class="btn btn-primary" id='applyBtn' value='Apply' /><br/>
+          </form> 
+          <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/>
+          <input type="button" class="btn btn-warning" value="Select None" onclick="fbApp.selectNone()" /><br/>
+          <input type="button" class="btn btn-inverse" value="Invert Selection" onclick="fbApp.invertSelection()" /><br/>
+        </div>
+        <div class="span8">
+          <table class='table table-striped span8'><tbody id='postlist'></tbody></table>
+          <table class='table span8'><tbody><tr><td><input type="button" class="btn span8" onclick="fbApp.getMorePosts()" value="Get More Posts" /></td></tr></tbody></table>
+        </div>
+      </div>
     </div>
     <script type="text/javascript" src="js/lib/jquery.js"></script>
-	<script type="text/javascript" src="js/Post.js"></script>
-	<script type="text/javascript" src="js/fbApp.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+  	<script type="text/javascript" src="js/Post.js"></script>
+  	<script type="text/javascript" src="js/fbApp.js"></script>
     <script type="text/javascript" src="js/boot.js"></script>
   </body>
 </html>

@@ -5,15 +5,26 @@
   <body>
 
     <div id='content'>
+	  <div id='postlist'></div>
+    <input type="button" onclick="fbApp.getMorePosts()" value="Get More Posts" /><br/>
+    <div style="display:none">
       Comment count: <span id='commentCount'>0</span><br/>
       Like count: <span id='likeCount'>0</span><br/>
       Already Commented: <span id='alreadyCommentedCount'>0</span><br/>
       Already Liked: <span id='alreadyLikedCount'>0</span><br/>
       Failed Comment count: <span id='fcommentCount'>0</span><br/>
       Failed Like count: <span id='flikeCount'>0</span><br/>
-      <div id='log'></div>
+    </div>
+    <form id="likeAndComment">
+      <input type='checkbox' selected id='likeCheckbox' /> Like<br/>
+      <input type='checkbox' id='commentCheckbox' /><input id='commentBox' /><br/>
+      <input type='submit' id='applyBtn' value='Apply' /><br/>
+    </form> 
+    <div id='log'></div>
     </div>
     <script type="text/javascript" src="js/lib/jquery.js"></script>
+	<script type="text/javascript" src="js/Post.js"></script>
+	<script type="text/javascript" src="js/fbApp.js"></script>
     <script type="text/javascript" src="js/boot.js"></script>
   </body>
 </html>

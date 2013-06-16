@@ -3,7 +3,7 @@ require_once("config.php");
 
 $appId = APP_ID;
 $appSecret = APP_SECRET;
-$myURL = "http://chakradarraju.blr.corp.google.com/fbapp/accessToken.php";
+$myURL = MY_URL;
 
 session_start();
 

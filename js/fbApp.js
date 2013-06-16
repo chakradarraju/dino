@@ -2,6 +2,7 @@ var fbApp = {
 	init: function(accessToken) {
 		this.accessToken = accessToken;
 		this.posts = [];
+		this.queue = [];
 		this.fetchUserData().then(this.initUser.bind(this));
 	},
 	fetchUserData: function() {
@@ -30,7 +31,7 @@ var fbApp = {
 			function(response) {
 				$.each(response.data,function(index,postdata) {
 					var post = new Post(postdata);
-					postlist.appendChild(post.render());
+					postlist.appendChild(post.getHTMLNode());
 					self.posts.push(post);
 				});
 				this.fetchMoreURL = response.paging.next;
@@ -46,33 +47,35 @@ var fbApp = {
 		}); 
 	},
 	likeAndComment: function() {
-		var shouldLike = $("#likeCheckbox").attr('checked'),
-			shouldComment = $("#commentCheckbox").attr('checked'),
-			comment = $("#commentBox").value();
+		var shouldLike = !!$("#likeCheckbox").is(':checked'),
+			shouldComment = $("#commentCheckbox").is(':checked'),
+			comment = $("#commentBox").val(),
+			self = this;
+
 		$.each(this.posts,function(index,post) {
-			if(shouldLike&&!post.isLiked(post.id)) this.like(post.id);
-			if(shouldComment&&!post.isCommented(post.id,comment)) this.comment(post.id,comment);
+			if(post.isChecked()) {
+				if(shouldLike&&!post.isLiked(self.name)) self.like(post.id);
+				if(shouldComment&&!post.isCommented(self.name,comment)) self.comment(post.id,comment);
+			}
+		});
+		$.when.apply({},this.queue).done(function() {
+			self.queue = [];
+			alert("Done");
 		});
 	},
 	like: function(postId) {
-		$.get("https://graph.facebook.com/"+postId+"/likes?method=POST&format=json&access_token="+this.accessToken,
+		this.queue.push($.get("https://graph.facebook.com/"+postId+"/likes?method=POST&format=json&access_token="+this.accessToken,
 			function(data) {
 				if(data) incrementLikeCount();
 				else failedLikeCount();
-			},"json")
-		.error(function(e) {
-			failedLikeCount();
-		});
+			},"json"));
 	},
 	comment: function(postId,comment) {
 		comment = encodeURIComponent(comment);
-		$.get("https://graph.facebook.com/"+post.id+"/comments?method=POST&message="+comment+"&format=json&access_token="+getVars.access_token,
-		function(data) {
-			if(data.id) incrementCommentCount();
-			else failedCommentCount();
-		}, "json")
-		.error(function(e) {
-			failedLikeCount();
-		});
+		this.queue.push($.get("https://graph.facebook.com/"+postId+"/comments?method=POST&message="+comment+"&format=json&access_token="+this.accessToken,
+			function(data) {
+				if(data.id) incrementCommentCount();
+				else failedCommentCount();
+			}, "json"));
 	}
 }

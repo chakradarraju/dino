@@ -9,7 +9,7 @@ Post.prototype.getHTMLNode = function() {
 }
 
 Post.prototype.render = function() {
-	var jnode = $("<div><input type='checkbox' />"+this.getLabel()+"</div>");
+	var jnode = $("<div><input type='checkbox' /><label>"+this.getLabel()+"</label></div>");
 	return jnode[0];
 }
 
@@ -19,7 +19,7 @@ Post.prototype.getLabel = function() {
 }
 
 Post.prototype.isChecked = function() {
-	return $("input:checked",this.domNode).length !== 0;
+	return $("input",this.domNode).is(":checked");
 }
 
 Post.prototype.like = function() {
@@ -42,6 +42,7 @@ Post.prototype.isLiked = function(userName) {
 }
 
 Post.prototype.isCommented = function(userName,comment) {
+	var post = this._post;
 	if(!post||!post.comments||!post.comments.data) return false;
 	var comments = post.comments.data;
 	for(var i=0;i<comments.length;i++) {

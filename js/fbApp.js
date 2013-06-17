@@ -4,6 +4,7 @@ var fbApp = {
 		this.posts = [];
 		this.queue = [];
 		this.fetchUserData().then(this.initUser.bind(this));
+		this.prevPost = null;
 	},
 	fetchUserData: function() {
 		self = this;
@@ -30,6 +31,7 @@ var fbApp = {
 		$.get(this.fetchMoreURL,
 			function(response) {
 				$.each(response.data,function(index,postdata) {
+					if(!self.prevPost) self.prevPost = postdata.id;
 					var post = new Post(postdata);
 					postlist.appendChild(post.getHTMLNode());
 					self.posts.push(post);
@@ -61,6 +63,18 @@ var fbApp = {
 			if(post.isChecked()) post.uncheck();
 			else post.check();
 		});
+	},
+	onPostSelected: function(postId,shift) {
+		if(shift) {
+			var shouldSelect = false,
+				self = this;
+			$.each(this.posts,function(index,post) {
+				if(post.id === self.prevPost || post.id === postId) shouldSelect = !shouldSelect;
+				if(shouldSelect&&!post.isChecked()) post.toggle();
+			});
+		} else {
+			this.prevPost = postId;
+		}
 	},
 	likeAndComment: function() {
 		var shouldLike = !!$("#likeCheckbox").is(':checked'),

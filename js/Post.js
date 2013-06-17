@@ -1,6 +1,7 @@
 Post = function(post) {
 	this.id = post.id;
 	this.domNode = false;
+	this.state = false;
 	this._post = post;
 };
 
@@ -9,7 +10,8 @@ Post.prototype.getHTMLNode = function() {
 }
 
 Post.prototype.render = function() {
-	var jnode = $("<tr><td><label><input type='checkbox' />"+this.getLabel()+"</label></td></tr>");
+	var jnode = $("<tr><td>"+this.getLabel()+"</td></tr>");
+	$("td",jnode).click(this.onClick.bind(this));
 	return jnode[0];
 }
 
@@ -18,16 +20,27 @@ Post.prototype.getLabel = function() {
 	return this._post.from.name + ": " + message;
 }
 
+Post.prototype.onClick = function(e) {
+	this.toggle();
+	if(this.isChecked()) fbApp.onPostSelected(this.id,e.shiftKey);
+}
+
 Post.prototype.isChecked = function() {
-	return $("input",this.domNode).is(":checked");
+	return this.state;
+}
+
+Post.prototype.toggle = function() {
+	this.domNode.className = ["","info"][(this.state = !this.state)+0];
 }
 
 Post.prototype.check = function() {
-	$("input",this.domNode).prop('checked',true);
+	if(this.isChecked()) return;
+	this.toggle();
 }
 
 Post.prototype.uncheck = function() {
-	$("input",this.domNode).prop('checked',false);
+	if(!this.isChecked()) return;
+	this.toggle();
 }
 
 Post.prototype.like = function() {

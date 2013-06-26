@@ -90,6 +90,7 @@ var fbApp = {
 		});
 		$.when.apply({},this.queue).done(function() {
 			self.queue = [];
+			self.selectNone();
 			alert("Done");
 		});
 	},

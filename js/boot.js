@@ -30,3 +30,12 @@ function gotoAuthPage() {
   byId('content').innerHTML = "Click <a href='./accessToken.php'>here</a>"
   + " to authenticate your account";
 }
+
+function getProperty(obj, list) {
+  var next;
+  while(next=list.shift()) {
+    if(!obj) return "";
+    obj = obj[next];
+  }
+  return obj;
+}

@@ -10,7 +10,7 @@ Post.prototype.getHTMLNode = function() {
 }
 
 Post.prototype.render = function() {
-	var jnode = $("<tr><td>"+this.getLabel()+"</td></tr>");
+	var jnode = $("<tr><td>"+this.getLabel()+"</td><td>"+this.getInfo()+"</td></tr>");
 	$("td",jnode).click(this.onClick.bind(this));
 	return jnode[0];
 }
@@ -18,6 +18,13 @@ Post.prototype.render = function() {
 Post.prototype.getLabel = function() {
 	var message = this._post.message || this._post.story;
 	return this._post.from.name + ": " + message;
+}
+
+Post.prototype.getInfo = function() {
+	var likes = getProperty(this,["_post","likes","data","length"]), comments = getProperty(this,["_post","comments","data","length"]);
+	if(likes) likes = "likes: "+likes;
+	if(comments) comments = " comments: "+comments;
+	return "<small>"+likes+comments+"</small>";
 }
 
 Post.prototype.onClick = function(e) {

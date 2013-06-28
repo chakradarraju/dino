@@ -2,6 +2,7 @@
   <head>
     <title>Facebook block comment</title>
     <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="bootstrap/css/datepicker.css" type="text/css" rel="stylesheet" />
     <style>
       input[type=checkbox] {
         margin-right: 5px;
@@ -26,12 +27,13 @@
           <form id="likeAndComment">
             <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
             <label><input type='checkbox' id='commentCheckbox' /><input id='commentBox' class="span2" /></label>
-            <input type='submit' class="btn btn-primary" id='applyBtn' value='Apply' /><br/>
+            <input type='submit' class="btn btn-primary" id='applyBtn' value='Apply' /><br/><br/>
+	    <label>Filter By Date<br/><input class="span2" size="16" value="26-06-1991" id="dp1" /></label>
           </form> 
-          <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/>
-          <input type="button" class="btn btn-warning" value="Select None" onclick="fbApp.selectNone()" /><br/>
-          <input type="button" class="btn btn-inverse" value="Invert Selection" onclick="fbApp.invertSelection()" /><br/>
-		  <input type="button" class="btn btn-danger" value="Remove my posts" onclick="fbApp.removeMyPosts()" /><br/>
+          <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/><br/>
+          <input type="button" class="btn btn-warning" value="Select None" onclick="fbApp.selectNone()" /><br/><br/>
+          <input type="button" class="btn btn-inverse" value="Invert Selection" onclick="fbApp.invertSelection()" /><br/><br/>
+		  <input type="button" class="btn btn-danger" value="Remove my posts" onclick="fbApp.removeMyPosts()" /><br/><br/>
         </div>
         <div class="span8">
           <table class='table table-striped span8'><tbody id='postlist'></tbody></table>
@@ -41,6 +43,14 @@
     </div>
     <script type="text/javascript" src="js/lib/jquery.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+	var date_choosen = new Date(); /* By default fetches current day's feeds */
+	$(function() {
+		$('#dp1').datepicker().on('changeDate', function(ev) { date_choosen = new Date(ev.date); });
+	});
+
+    </script>
   	<script type="text/javascript" src="js/Post.js"></script>
   	<script type="text/javascript" src="js/fbApp.js"></script>
     <script type="text/javascript" src="js/boot.js"></script>

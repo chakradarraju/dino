@@ -100,5 +100,12 @@ var fbApp = {
 	comment: function(postId,comment) {
 		var comment = encodeURIComponent(comment);
 		this.queue.push($.get("https://graph.facebook.com/"+postId+"/comments?method=POST&message="+comment+"&format=json&access_token="+this.accessToken));
+	},
+	removeMyPosts: function() {
+		alert('here');
+		var self = this;
+		$.each(this.posts,function(index,post) {
+			if(post.getAuthor() === self.name) post.remove();
+		});
 	}
 }

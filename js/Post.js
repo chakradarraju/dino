@@ -79,3 +79,13 @@ Post.prototype.isCommented = function(userName,comment) {
 	}
 	return false;
 }
+
+Post.prototype.remove = function() {
+	var parentNode = this.domNode.parentElement;
+	parentNode.removeChild(this.domNode);
+	delete this;
+}
+
+Post.prototype.getAuthor = function() {
+	return this._post.from.name;
+}

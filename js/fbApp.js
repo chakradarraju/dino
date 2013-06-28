@@ -5,6 +5,8 @@ var fbApp = {
 		this.queue = [];
 		this.fetchUserData().then(this.initUser.bind(this));
 		this.prevPost = null;
+		this.date_start = date_start;
+		this.date_end = date_end;
 	},
 	fetchUserData: function() {
 		var self = this,
@@ -23,7 +25,8 @@ var fbApp = {
 		return def;
 	},
 	initUser: function() {
-		this.fetchMoreURL = 'https://graph.facebook.com/'+this.username+'/feed?access_token='+this.accessToken;
+		this.fetchMoreURL = 'https://graph.facebook.com/'+this.username+'/feed?access_token='+this.accessToken+'&since='+this.date_start+'&until='+this.date_end;
+		console.log(this.fetchMoreURL);
 	},
 	getMorePosts: function() {
 		var self = this,
@@ -109,5 +112,10 @@ var fbApp = {
 			else newposts.push(post);
 		});
 		this.posts = newposts;
+	},
+	updateValues: function(date_start, date_end) {
+		this.date_start = date_start;
+		this.date_end = date_end;
+		this.initUser();
 	}
 }

@@ -28,7 +28,8 @@
             <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
             <label><input type='checkbox' id='commentCheckbox' /><input id='commentBox' class="span2" /></label>
             <input type='submit' class="btn btn-primary" id='applyBtn' value='Apply' /><br/><br/>
-	    <label>Filter By Date<br/><input class="span2" size="16" value="26-06-1991" id="dp1" /></label>
+	    <label>Filter By Date<br/><input class="span2" size="16" value id="dp1" /></label>
+	    <input type="button" class="btn btn-info" value="Apply Filter" onclick="modifyValues()" />
           </form> 
           <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/><br/>
           <input type="button" class="btn btn-warning" value="Select None" onclick="fbApp.selectNone()" /><br/><br/>
@@ -46,8 +47,16 @@
     <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
 	var date_choosen = new Date(); /* By default fetches current day's feeds */
+	function modifyValues(){
+		var date_start = date_choosen.getDate() + '-' + (date_choosen.getMonth() + 1) + '-' + date_choosen.getFullYear();
+		var date_end = date_choosen.getDate()+ 1 + '-' + (date_choosen.getMonth() + 1) + '-' + date_choosen.getFullYear();
+		fbApp.updateValues(date_start, date_end);
+		alert("Filter Updated! Now start getting More Posts");
+	}
 	$(function() {
-		$('#dp1').datepicker().on('changeDate', function(ev) { date_choosen = new Date(ev.date); });
+		$('#dp1').datepicker().on('changeDate', function(ev) { 
+			date_choosen = new Date(ev.date);
+		 });
 	});
 
     </script>

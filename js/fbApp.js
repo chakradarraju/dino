@@ -7,8 +7,8 @@ var fbApp = {
 		this.prevPost = null;
 	},
 	fetchUserData: function() {
-		self = this;
-		var def = $.Deferred();
+		var self = this,
+			def = $.Deferred();
 		$.get('https://graph.facebook.com/me?fields=name,username&access_token='+this.accessToken,
 			function(response) {
 				$.each(response,function(key,value) {
@@ -26,8 +26,8 @@ var fbApp = {
 		this.fetchMoreURL = 'https://graph.facebook.com/'+this.username+'/feed?access_token='+this.accessToken;
 	},
 	getMorePosts: function() {
-		var self = this;
-		var postlist = $("#postlist")[0];
+		var self = this,
+			postlist = $("#postlist")[0];
 		$.get(this.fetchMoreURL,
 			function(response) {
 				$.each(response.data,function(index,postdata) {
@@ -36,7 +36,7 @@ var fbApp = {
 					postlist.appendChild(post.getHTMLNode());
 					self.posts.push(post);
 				});
-				this.fetchMoreURL = response.paging.next;
+				self.fetchMoreURL = response.paging.next;
 			},"json")
 		.error(function(ajaxObj) {
 			var e = ajaxObj.responseJSON;
@@ -98,7 +98,7 @@ var fbApp = {
 		this.queue.push($.get("https://graph.facebook.com/"+postId+"/likes?method=POST&format=json&access_token="+this.accessToken));
 	},
 	comment: function(postId,comment) {
-		comment = encodeURIComponent(comment);
+		var comment = encodeURIComponent(comment);
 		this.queue.push($.get("https://graph.facebook.com/"+postId+"/comments?method=POST&message="+comment+"&format=json&access_token="+this.accessToken));
 	}
 }

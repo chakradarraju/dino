@@ -29,6 +29,7 @@ var fbApp = {
 		var self = this;
 		this.getPosts(this.fetchMoreURL,function(response) {
 			self.fetchMoreURL = response.paging.next;
+			$("#numPosts").html(self.posts.length);
 		});
 	},
 	selectAll: function() {
@@ -48,7 +49,7 @@ var fbApp = {
 		});
 	},
 	onPostSelected: function(postId,shift) {
-		if(shift&&self.prevPost) {
+		if(shift&&this.prevPost) {
 			var shouldSelect = false,
 				self = this;
 			$.each(this.posts,function(index,post) {
@@ -104,6 +105,7 @@ var fbApp = {
 				});
 				if(isAllPostsOnDate)
 					fetchNextPage();
+				$("#numPosts").html(self.posts.length);
 			}, function(post) {
 				return dateEquals(new Date(post.created_time),date);
 			});
@@ -141,5 +143,6 @@ var fbApp = {
 			else postList.push(post);
 		});
 		this.posts = postList;
+		$("#numPosts").html(self.posts.length);
 	}
 }

@@ -5,8 +5,6 @@ var fbApp = {
 		this.queue = [];
 		this.fetchUserData().then(this.initUser.bind(this));
 		this.prevPost = null;
-		this.date_start = date_start;
-		this.date_end = date_end;
 	},
 	fetchUserData: function() {
 		var self = this,
@@ -25,31 +23,13 @@ var fbApp = {
 		return def;
 	},
 	initUser: function() {
-		this.fetchMoreURL = 'https://graph.facebook.com/'+this.username+'/feed?access_token='+this.accessToken+'&since='+this.date_start+'&until='+this.date_end;
-		console.log(this.fetchMoreURL);
+		this.fetchMoreURL = 'https://graph.facebook.com/'+this.username+'/feed?access_token='+this.accessToken;
 	},
 	getMorePosts: function() {
-		var self = this,
-			postlist = $("#postlist")[0];
-		$.get(this.fetchMoreURL,
-			function(response) {
-				$.each(response.data,function(index,postdata) {
-					if(!self.prevPost) self.prevPost = postdata.id;
-					var post = new Post(postdata);
-					postlist.appendChild(post.getHTMLNode());
-					self.posts.push(post);
-				});
-				self.fetchMoreURL = response.paging.next;
-			},"json")
-		.error(function(ajaxObj) {
-			var e = ajaxObj.responseJSON;
-			if(e&&e.error&&e.error.type&&e.error.type==="OAuthException") {
-				gotoAuthPage();
-			} else {
-				alert("Unknown error, we are working on fixing it, please be patient");
-				console.error(ajaxObj.response);
-			}   
-		}); 
+		var self = this;
+		this.getPosts(this.fetchMoreURL,function(response) {
+			self.fetchMoreURL = response.paging.next;
+		});
 	},
 	selectAll: function() {
 		$.each(this.posts,function(index,post) {
@@ -68,7 +48,7 @@ var fbApp = {
 		});
 	},
 	onPostSelected: function(postId,shift) {
-		if(shift) {
+		if(shift&&self.prevPost) {
 			var shouldSelect = false,
 				self = this;
 			$.each(this.posts,function(index,post) {
@@ -81,7 +61,7 @@ var fbApp = {
 	},
 	likeAndComment: function() {
 		var shouldLike = !!$("#likeCheckbox").is(':checked'),
-			shouldComment = $("#commentCheckbox").is(':checked'),
+			shouldComment = !!$("#commentCheckbox").is(':checked'),
 			comment = $("#commentBox").val(),
 			self = this;
 
@@ -113,9 +93,53 @@ var fbApp = {
 		});
 		this.posts = newposts;
 	},
-	updateValues: function(date_start, date_end) {
-		this.date_start = date_start;
-		this.date_end = date_end;
-		this.initUser();
+	getPostsOnDate: function(date) {
+		if(date.toString() === "Invalid Date") {
+			alert("Please choose a valid date");
+			return;
+		}
+		var fromDate = encodeURIComponent(date.toGMTString()),
+			toDate = encodeURIComponent(nextDay(date).toGMTString()),
+			fetchURL = "https://graph.facebook.com/"+this.username+"/feed?access_token="+this.accessToken+"&since="+fromDate+"&until="+toDate,
+			fetchedPosts = [],
+			self = this,
+			count = 0;
+		(function fetchNextPage() {
+			console.log("Fetching: "+fetchURL);
+			self.getPosts(fetchURL, function(response) {
+				fetchURL = response.paging.next;
+				var isAllPostsOnDate = true;
+				$.each(response.data, function(index,post) {
+					if(!dateEquals(new Date(post.created_time),date)) isAllPostsOnDate = false;
+				});
+				if(isAllPostsOnDate)
+					fetchNextPage();
+			}, function(post) {
+				return dateEquals(new Date(post.created_time),date);
+			});
+		})();
+	},
+	getPosts: function(fetchURL,callback,filterFn) {
+		var self = this,
+		postlist = $("#postlist")[0];
+		$.get(fetchURL,
+			function(response) {
+				$.each(response.data,function(index,postdata) {
+					if(filterFn && !filterFn(postdata)) return;
+					var post = new Post(postdata);
+					postlist.appendChild(post.getHTMLNode());
+					self.posts.push(post);
+				});
+				callback(response);
+			},"json")
+		.error(function(ajaxObj) {
+			var e = ajaxObj.responseJSON;
+			if(e&&e.error&&e.error.type&&e.error.type==="OAuthException") {
+				gotoAuthPage();
+			} else {
+				alert("Unknown error, we are working on fixing it, please be patient");
+				console.error(ajaxObj.response);
+			}   
+		}); 
 	}
 }

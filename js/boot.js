@@ -1,4 +1,5 @@
-var getVars = {};
+var getVars = {},
+    data = [];
 function byId(id) {
   return document.getElementById(id);
 }
@@ -9,7 +10,7 @@ function parseForGetVars() {
   getPart.replace(/[?&]+([^=&]+)=([^&]*)/gi,
     function(m,key,value) {
       getVars[key] = value;
-  });
+    });
 }
 
 parseForGetVars();
@@ -23,7 +24,7 @@ $("#likeAndComment").bind({
   "submit": function(e) {
     e.preventDefault();
     fbApp.likeAndComment();
-}
+  }
 });
 
 function gotoAuthPage() {
@@ -39,3 +40,21 @@ function getProperty(obj, list) {
   }
   return obj;
 }
+
+function previousDay(date) {
+  var ret = new Date(date);
+  ret.setDate(ret.getDate()-1);
+  return ret;
+}
+
+function nextDay(date) {
+  var ret = new Date(date);
+  ret.setDate(ret.getDate()+1);
+  return ret;
+}
+
+function dateEquals(d1, d2) {
+  return d1.toString().substring(0,15) === d2.toString().substring(0,15);
+}
+
+$("#datePicker").datepicker();

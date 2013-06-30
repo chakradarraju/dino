@@ -1,67 +1,55 @@
 <html>
-  <head>
-    <title>Facebook block comment</title>
-    <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-    <link href="bootstrap/css/datepicker.css" type="text/css" rel="stylesheet" />
-    <style>
-      input[type=checkbox] {
-        margin-right: 5px;
-      }
-      td {
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-      }
-    </style>
-  </head>
-  <body>
+<head>
+  <title>Facebook block comment</title>
+  <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+  <link href="bootstrap/css/datepicker.css" type="text/css" rel="stylesheet" />
+  <style>
+  input[type=checkbox] {
+    margin-right: 5px;
+  }
+  td {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+  }
+  </style>
+</head>
+<body>
 
-    <div id='content' class='container'>
-      <div class="row span12" style="border: black 2px;">
-        <div class="hero">
-          <h1><p class="text-center">Dino</p></h1>
-        </div>
-      </div>
-      <div class="row span12s">
-        <div class="span3">
-          <form id="likeAndComment">
-            <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
-            <label><input type='checkbox' id='commentCheckbox' /><input id='commentBox' class="span2" /></label>
-            <input type='submit' class="btn btn-primary" id='applyBtn' value='Apply' /><br/><br/>
-	    <label>Filter By Date<br/><input class="span2" size="16" value id="dp1" /></label>
-	    <input type="button" class="btn btn-info" value="Apply Filter" onclick="modifyValues()" />
-          </form> 
-          <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/><br/>
-          <input type="button" class="btn btn-warning" value="Select None" onclick="fbApp.selectNone()" /><br/><br/>
-          <input type="button" class="btn btn-inverse" value="Invert Selection" onclick="fbApp.invertSelection()" /><br/><br/>
-		  <input type="button" class="btn btn-danger" value="Remove my posts" onclick="fbApp.removeMyPosts()" /><br/><br/>
-        </div>
-        <div class="span8">
-          <table class='table table-striped span8'><tbody id='postlist'></tbody></table>
-          <table class='table span8'><tbody><tr><td><input type="button" class="btn span8" onclick="fbApp.getMorePosts()" value="Get More Posts" /></td></tr></tbody></table>
-        </div>
+  <div id='content' class='container'>
+    <div class="row span12" style="border: black 2px;">
+      <div class="hero">
+        <h1><p class="text-center">Dino</p></h1>
       </div>
     </div>
-    <script type="text/javascript" src="js/lib/jquery.js"></script>
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript">
-	var date_choosen = new Date(); /* By default fetches current day's feeds */
-	function modifyValues(){
-		var date_start = date_choosen.getDate() + '-' + (date_choosen.getMonth() + 1) + '-' + date_choosen.getFullYear();
-		var date_end = date_choosen.getDate()+ 1 + '-' + (date_choosen.getMonth() + 1) + '-' + date_choosen.getFullYear();
-		fbApp.updateValues(date_start, date_end);
-		alert("Filter Updated! Now start getting More Posts");
-	}
-	$(function() {
-		$('#dp1').datepicker().on('changeDate', function(ev) { 
-			date_choosen = new Date(ev.date);
-		 });
-	});
+    <div class="row span12s">
+      <div class="span3">
+        <form id="likeAndComment">
+          <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
+          <label><input type='checkbox' id='commentCheckbox' /><input id='commentBox' class="span2" /></label>
+          <input type='submit' class="btn btn-primary" id='applyBtn' value='Apply' /><br/><br/>
+        </form> 
 
-    </script>
-  	<script type="text/javascript" src="js/Post.js"></script>
-  	<script type="text/javascript" src="js/fbApp.js"></script>
-    <script type="text/javascript" src="js/boot.js"></script>
-  </body>
+        <input class="span2" size="16" value id="datePicker" />
+        <input type="button" class="btn btn-info" value="Fetch Posts on this date" onclick="fbApp.getPostsOnDate(new Date($('#datePicker').val()))" /><br/><br/>
+
+        <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/><br/>
+        <input type="button" class="btn btn-warning" value="Select None" onclick="fbApp.selectNone()" /><br/><br/>
+        <input type="button" class="btn btn-inverse" value="Invert Selection" onclick="fbApp.invertSelection()" /><br/><br/>
+        <input type="button" class="btn btn-danger" value="Remove my posts" onclick="fbApp.removeMyPosts()" /><br/><br/>
+
+      </div>
+      <div class="span8">
+        <table class='table table-striped span8'><tbody id='postlist'></tbody></table>
+        <table class='table span8'><tbody><tr><td><input type="button" class="btn span8" onclick="fbApp.getMorePosts()" value="Get More Posts" /></td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="js/lib/jquery.js"></script>
+  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
+  <script type="text/javascript" src="js/Post.js"></script>
+  <script type="text/javascript" src="js/fbApp.js"></script>
+  <script type="text/javascript" src="js/boot.js"></script>
+</body>
 </html>

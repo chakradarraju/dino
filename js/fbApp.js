@@ -84,15 +84,6 @@ var fbApp = {
 		var comment = encodeURIComponent(comment);
 		this.queue.push($.get("https://graph.facebook.com/"+postId+"/comments?method=POST&message="+comment+"&format=json&access_token="+this.accessToken));
 	},
-	removeMyPosts: function() {
-		var self = this,
-			newposts = [];
-		$.each(this.posts,function(index,post) {
-			if(post.getAuthor() === self.name) post.remove();
-			else newposts.push(post);
-		});
-		this.posts = newposts;
-	},
 	getPostsOnDate: function(date) {
 		if(date.toString() === "Invalid Date") {
 			alert("Please choose a valid date");
@@ -105,7 +96,6 @@ var fbApp = {
 			self = this,
 			count = 0;
 		(function fetchNextPage() {
-			console.log("Fetching: "+fetchURL);
 			self.getPosts(fetchURL, function(response) {
 				fetchURL = response.paging.next;
 				var isAllPostsOnDate = true;
@@ -126,6 +116,7 @@ var fbApp = {
 			function(response) {
 				$.each(response.data,function(index,postdata) {
 					if(filterFn && !filterFn(postdata)) return;
+					if(postdata.from.name === self.name) return;
 					var post = new Post(postdata);
 					postlist.appendChild(post.getHTMLNode());
 					self.posts.push(post);

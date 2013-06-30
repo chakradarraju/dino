@@ -132,5 +132,14 @@ var fbApp = {
 				console.error(ajaxObj.response);
 			}   
 		}); 
+	},
+	removeSelected: function() {
+		var self = this,
+			postList = [];
+		$.each(this.posts,function(index,post) {
+			if(post.isChecked()) post.remove();
+			else postList.push(post);
+		});
+		this.posts = postList;
 	}
 }

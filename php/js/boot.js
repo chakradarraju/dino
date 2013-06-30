@@ -1,3 +1,5 @@
+mixpanel.track("Loaded page");
+
 var getVars = {},
     data = [];
 function byId(id) {
@@ -17,6 +19,7 @@ parseForGetVars();
 if(!getVars.access_token) {
   gotoAuthPage();
 } else {
+  mixpanel.track("Got access_token");
   fbApp.init(getVars.access_token);
 }
 

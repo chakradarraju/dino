@@ -16,7 +16,7 @@ if(isset($_GET['code'])) {
   parse_str($forToken,$params);
   if(!isset($params['access_token']))
     die('{"error":"Facebook authentication failed"}');
-  header("Location: index.html?access_token=" . $params['access_token']);
+  header("Location: app.html?access_token=" . $params['access_token']);
 } else {
   $_SESSION['state'] = md5(uniqid(rand(), TRUE));
   echo("<script> top.location.href='http://www.facebook.com/dialog/oauth?client_id=$appId&redirect_uri=" . urlencode($myURL) . "&state={$_SESSION['state']}&scope=publish_actions,read_stream,friends_status' </script>");

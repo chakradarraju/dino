@@ -1,67 +1,36 @@
 <html>
 <head>
-  <title>Facebook block comment</title>
-  <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-  <link href="bootstrap/css/datepicker.css" type="text/css" rel="stylesheet" />
-  <style>
-  input[type=checkbox] {
-    margin-right: 5px;
-  }
-  td {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-  }
-  </style>
+	<title>Dino</title>
+	<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-
-  <div id='content' class='container'>
-    <div class="row span12" style="border: black 2px;">
-      <div class="hero">
-        <h1><p class="text-center">Dino</p></h1>
-      </div>
-    </div>
-    <div class="row span12s">
-      <div class="span3">
-        <form id="likeAndComment">
-          <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
-          <label><input type='checkbox' id='commentCheckbox' /><input id='commentBox' class="span2" /></label>
-          <input type='submit' class="btn btn-primary" id='applyBtn' value='Like' /><br/><br/>
-        </form> 
-
-        <input class="span2" size="16" value id="datePicker" />
-        <input type="button" class="btn btn-info" value="Fetch Posts on this date" onclick="fbApp.getPostsOnDate(new Date($('#datePicker').val()))" /><br/><br/>
-
-        <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/><br/>
-        <input type="button" class="btn btn-warning" value="Select None" onclick="fbApp.selectNone()" /><br/><br/>
-        <input type="button" class="btn btn-inverse" value="Invert Selection" onclick="fbApp.invertSelection()" /><br/><br/>
-        <input type="button" class="btn btn-danger" value="Remove Selected" onclick="fbApp.removeSelected()" /><br/><br/>
-
-        Number of Posts: <span id="numPosts">0</span><br/><br/>
-
-        <label><input type="checkbox" id="ignoreMyPosts" checked="checked" /> Ignore posts that I made</label>
-
-      </div>
-      <div class="span8">
-        <table class='table table-striped span8'><tbody id='postlist'></tbody></table>
-        <table class='table span8'><tbody><tr><td><input type="button" class="btn span8" onclick="fbApp.getMorePosts()" value="Get More Posts" /></td></tr></tbody></table>
-      </div>
-    </div>
-  </div>
-
-<!-- start Mixpanel -->
-<script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
-typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
-b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
-mixpanel.init("1a3694b8cc3644303b304d5beb3ba1bd");</script>
-<!-- end Mixpanel -->
-
-  <script type="text/javascript" src="js/lib/jquery.js"></script>
-  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
-  <script type="text/javascript" src="js/Post.js"></script>
-  <script type="text/javascript" src="js/fbApp.js"></script>
-  <script type="text/javascript" src="js/boot.js"></script>
+	<div class='container'>
+		<div class='row span12'>
+			<h1><p class="text-center">Dino</p></h1>
+		</div>
+		<div class='row span12' style="margin-top: 40px">
+			<div class='span6'>
+				<div class="well well-small">
+					<h2>Instructions:</h2>
+					<ul>
+						<li>Give permission by clicking on the image on right side.</li>
+						<li>You can either "Fetch posts on this date", to get all posts on that date, or you can "Get more posts" for getting posts starting from latest post.</li>
+						<li>When you have all the posts you want to like and/or comment in app, select the posts which you want to like and/or comment.</li>
+						<li>Check the box next to like, if you want to like selected posts.</li>
+						<li>Fill comment box and check the box next to it, if you want to comment on selected posts.</li>
+						<li>And then click on button below it.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="span5 ">
+				<a href="accessToken.php"><img src="img/fb-hpybday.jpeg" /></a><br/>
+					<small>
+						Dino needs your permission to post on your behalf, when Facebook asks for giving permission press Okay.<br/>
+						Don't worry the permission will be used only for liking and commenting on the post that you manually select.<br/>
+						No spam certified by <a href='http://www.facebook.com/chakradarraju/'>Chakradar Raju</a> :)
+					</small>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

@@ -1,9 +1,9 @@
 <?php
 require_once("config.php");
 
-$appId = APP_ID;
-$appSecret = APP_SECRET;
-$myURL = MY_URL;
+$appId = getenv("APP_ID");
+$appSecret = getenv("APP_SECRET");
+$myURL = getenv("MY_URL");
 
 session_start();
 

@@ -127,12 +127,13 @@ var fbApp = {
 	},
 	getPosts: function(fetchURL,callback,filterFn) {
 		var self = this,
-		postlist = $("#postlist")[0];
+			postlist = $("#postlist")[0],
+			shouldIgnoreMyPosts = isChecked('ignoreMyPosts');
 		$.get(fetchURL,
 			function(response) {
 				$.each(response.data,function(index,postdata) {
 					if(filterFn && !filterFn(postdata)) return;
-					if(postdata.from.name === self.name) return;
+					if(shouldIgnoreMyPosts && postdata.from.name === self.name) return;
 					var post = new Post(postdata);
 					postlist.appendChild(post.getHTMLNode());
 					self.posts.push(post);

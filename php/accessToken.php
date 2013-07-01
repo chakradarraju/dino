@@ -1,5 +1,5 @@
 <?php
-require_once("config.php");
+require_once("../data/config.php");
 
 $appId = getenv("APP_ID");
 $appSecret = getenv("APP_SECRET");

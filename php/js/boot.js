@@ -30,6 +30,23 @@ $("#likeAndComment").bind({
   }
 });
 
+$("#likeCheckbox").change(likeCommentChange);
+$("#commentCheckbox").change(likeCommentChange);
+
+function likeCommentChange() {
+  var state = 0,
+      strings = ["Choose Like or Comment", "Like", "Comment", "Like & Comment"];
+  if(isChecked('likeCheckbox')) state += 1;
+  if(isChecked('commentCheckbox')) state += 2;
+  $("#applyBtn").val(strings[state]);
+  $("#applyBtn").removeAttr('disabled');
+  if(state === 0) $("#applyBtn").attr('disabled','disabled');
+}
+
+function isChecked(id) {
+  return !!$("#"+id).is(':checked');
+}
+
 function gotoAuthPage() {
   byId('content').innerHTML = "<big><big>Click <a href='./accessToken.php'>here</a> to authenticate your account</big></big><br/><small>Dino needs your permission to post on your behalf, when Facebook asks for giving permission press Okay.<br/>Don't worry the permission will be used only for liking and commenting on the post that you manually select.<br/>No spam certified by <a href='http://www.facebook.com/chakradarraju/'>Chakradar Raju</a> :)</small>";
 }

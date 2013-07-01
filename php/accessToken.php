@@ -1,9 +1,9 @@
 <?php
-require_once("../data/config.php");
+require_once("../../data/config.php");
 
-$appId = getenv("APP_ID");
-$appSecret = getenv("APP_SECRET");
-$myURL = getenv("MY_URL");
+$appId = APP_ID;
+$appSecret = APP_SECRET;
+$myURL = MY_URL;
 
 session_start();
 

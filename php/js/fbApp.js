@@ -16,7 +16,7 @@ var fbApp = {
 				$.each(response,function(key,value) {
 					self[key] = value;
 				});
-				mixpanel.track("Got user details",{name:this.username});
+				mixpanel.track("Got user details",{name:self.username});
 				def.resolve();
 			}, "json")
 		.error(function(ajaxObj) {

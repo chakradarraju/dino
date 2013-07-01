@@ -31,8 +31,7 @@ $("#likeAndComment").bind({
 });
 
 function gotoAuthPage() {
-  byId('content').innerHTML = "Click <a href='./accessToken.php'>here</a>"
-  + " to authenticate your account";
+  byId('content').innerHTML = "<big><big>Click <a href='./accessToken.php'>here</a> to authenticate your account</big></big><br/><small>Dino needs your permission to post on your behalf, when Facebook asks for giving permission press Okay.<br/>Don't worry the permission will be used only for liking and commenting on the post that you manually select.<br/>No spam certified by <a href='http://www.facebook.com/chakradarraju/'>Chakradar Raju</a> :)</small>";
 }
 
 function getProperty(obj, list) {

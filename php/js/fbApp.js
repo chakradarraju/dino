@@ -5,6 +5,8 @@ var fbApp = {
 		this.queue = [];
 		this.fetchUserData().then(this.initUser.bind(this));
 		this.prevPost = null;
+		this.liked = 0;
+		this.commented = 0;
 	},
 	fetchUserData: function() {
 		var self = this,
@@ -34,16 +36,19 @@ var fbApp = {
 		});
 	},
 	selectAll: function() {
+		mixpanel.track("selectAll");
 		$.each(this.posts,function(index,post) {
 			post.check();
 		});
 	},
 	selectNone: function() {
+		mixpanel.track("selectNone");
 		$.each(this.posts,function(index,post) {
 			post.uncheck();
 		});
 	},
 	invertSelection: function() {
+		mixpanel.track("invertSelection");
 		$.each(this.posts,function(index,post) {
 			if(post.isChecked()) post.uncheck();
 			else post.check();
@@ -51,6 +56,7 @@ var fbApp = {
 	},
 	onPostSelected: function(postId,shift) {
 		if(shift&&this.prevPost) {
+			mixpanel.track("Range select");
 			var shouldSelect = false,
 				self = this;
 			$.each(this.posts,function(index,post) {
@@ -62,11 +68,13 @@ var fbApp = {
 		}
 	},
 	likeAndComment: function() {
+		mixpanel.track("likeAndComment");
 		var shouldLike = !!$("#likeCheckbox").is(':checked'),
 			shouldComment = !!$("#commentCheckbox").is(':checked'),
 			comment = $("#commentBox").val(),
 			self = this;
 
+		this.liked = 0; this.commented = 0;
 		$.each(this.posts,function(index,post) {
 			if(post.isChecked()) {
 				if(shouldLike&&!post.isLiked(self.name)) self.like(post.id);
@@ -76,21 +84,26 @@ var fbApp = {
 		$.when.apply({},this.queue).done(function() {
 			self.queue = [];
 			self.selectNone();
+			mixpanel.track("completed",{liked:self.liked,commented:self.commented});
 			alert("Done");
 		});
 	},
 	like: function(postId) {
+		this.liked++;
 		this.queue.push($.get("https://graph.facebook.com/"+postId+"/likes?method=POST&format=json&access_token="+this.accessToken));
 	},
 	comment: function(postId,comment) {
+		this.commented++;
 		var comment = encodeURIComponent(comment);
 		this.queue.push($.get("https://graph.facebook.com/"+postId+"/comments?method=POST&message="+comment+"&format=json&access_token="+this.accessToken));
 	},
 	getPostsOnDate: function(date) {
 		if(date.toString() === "Invalid Date") {
+			mixpanel.track("getPostsOnDate with invalid date");
 			alert("Please choose a valid date");
 			return;
 		}
+		mixpanel.track("getPostsOnDate");
 		var fromDate = encodeURIComponent(date.toGMTString()),
 			toDate = encodeURIComponent(nextDay(date).toGMTString()),
 			fetchURL = "https://graph.facebook.com/"+this.username+"/feed?access_token="+this.accessToken+"&since="+fromDate+"&until="+toDate,
@@ -137,6 +150,7 @@ var fbApp = {
 		}); 
 	},
 	removeSelected: function() {
+		mixpanel.track("removeSelected");
 		var self = this,
 			postList = [];
 		$.each(this.posts,function(index,post) {

@@ -73,7 +73,11 @@ var fbApp = {
 			shouldComment = !!$("#commentCheckbox").is(':checked'),
 			comment = $("#commentBox").val(),
 			self = this;
-
+		
+		if(!shouldLike&&!shouldComment) {
+			alert("Choose like or Comment");
+			return;
+		}
 		this.liked = 0; this.commented = 0;
 		$.each(this.posts,function(index,post) {
 			if(post.isChecked()) {
@@ -81,6 +85,10 @@ var fbApp = {
 				if(shouldComment&&!post.isCommented(self.name,comment)) self.comment(post.id,post.replaceVars(comment));
 			}
 		});
+		if(this.queue.length === 0) {
+			alert("Choose atleast 1 post to "+$("#applyBtn").val());
+			return;
+		}
 		$.when.apply({},this.queue).done(function() {
 			self.queue = [];
 			self.selectNone();

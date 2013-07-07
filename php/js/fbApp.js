@@ -78,7 +78,7 @@ var fbApp = {
 		$.each(this.posts,function(index,post) {
 			if(post.isChecked()) {
 				if(shouldLike&&!post.isLiked(self.name)) self.like(post.id);
-				if(shouldComment&&!post.isCommented(self.name,comment)) self.comment(post.id,comment);
+				if(shouldComment&&!post.isCommented(self.name,comment)) self.comment(post.id,post.replaceVars(comment));
 			}
 		});
 		$.when.apply({},this.queue).done(function() {

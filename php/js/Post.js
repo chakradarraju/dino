@@ -3,6 +3,12 @@ Post = function(post) {
 	this.domNode = false;
 	this.state = false;
 	this._post = post;
+
+	// Initing vars
+	var brokenName = this._post.from.name.split(" ");
+	this.var_name = this._post.from.name;
+	this.var_firstname = brokenName[0] || "";
+	this.var_lastname = brokenName[1] || "";
 };
 
 Post.prototype.getHTMLNode = function() {
@@ -88,4 +94,13 @@ Post.prototype.remove = function() {
 
 Post.prototype.getAuthor = function() {
 	return this._post.from.name;
+}
+
+Post.prototype.replaceVars = function(comment) {
+	var vars = ["firstname","lastname","name"],
+		self = this;
+	$.each(vars, function(index,value) {
+		comment = comment.replace("<"+value+">",self["var_"+value]);
+	});
+	return comment;
 }

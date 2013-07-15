@@ -100,7 +100,7 @@ Post.prototype.replaceVars = function(comment) {
 	var vars = ["firstname","lastname","name"],
 		self = this;
 	$.each(vars, function(index,value) {
-		comment = comment.replace("<"+value+">",self["var_"+value]);
+		if(self["var_"+value]) comment = comment.replace("<"+value+">",self["var_"+value]);
 	});
 	return comment;
 }

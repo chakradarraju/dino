@@ -71,7 +71,7 @@ var fbApp = {
 		mixpanel.track("likeAndComment");
 		var shouldLike = !!$("#likeCheckbox").is(':checked'),
 			shouldComment = !!$("#commentCheckbox").is(':checked'),
-			comment = $("#commentBox").val(),
+			comment = $("#commentBox").val().split("\n"),
 			self = this;
 		
 		if(!shouldLike&&!shouldComment) {
@@ -82,7 +82,7 @@ var fbApp = {
 		$.each(this.posts,function(index,post) {
 			if(post.isChecked()) {
 				if(shouldLike&&!post.isLiked(self.name)) self.like(post.id);
-				if(shouldComment&&!post.isCommented(self.name,comment)) self.comment(post.id,post.replaceVars(comment));
+				if(shouldComment&&!post.isCommented(self.name,comment)) self.comment(post.id,post.replaceVars(comment[rand(comment.length)]));
 			}
 		});
 		if(this.queue.length === 0) {

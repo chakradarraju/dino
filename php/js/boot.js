@@ -76,4 +76,8 @@ function dateEquals(d1, d2) {
   return d1.toString().substring(0,15) === d2.toString().substring(0,15);
 }
 
+function rand(n) {
+	return Math.floor(Math.random()*(n+1));
+}
+
 $("#datePicker").datepicker();

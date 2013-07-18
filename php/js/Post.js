@@ -5,8 +5,8 @@ Post = function(post) {
 	this._post = post;
 
 	// Initing vars
-	var brokenName = this._post.from.name.split(" ");
-	this.var_name = this._post.from.name;
+	this.var_name = getProperty(this._post,["from","name"]);
+	var brokenName = this.var_name.split(" ");
 	this.var_firstname = brokenName[0] || "";
 	this.var_lastname = brokenName[1] || "";
 };

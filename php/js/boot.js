@@ -77,7 +77,7 @@ function dateEquals(d1, d2) {
 }
 
 function rand(n) {
-	return Math.floor(Math.random()*(n+1));
+	return Math.floor(Math.random()*n);
 }
 
 $("#datePicker").datepicker();

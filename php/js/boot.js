@@ -30,19 +30,6 @@ $("#likeAndComment").bind({
   }
 });
 
-$("#likeCheckbox").change(likeCommentChange);
-$("#commentCheckbox").change(likeCommentChange);
-
-function likeCommentChange() {
-  var state = 0,
-      strings = ["Choose Like or Comment", "Like", "Comment", "Like & Comment"];
-  if(isChecked('likeCheckbox')) state += 1;
-  if(isChecked('commentCheckbox')) state += 2;
-  $("#applyBtn").val(strings[state]);
-  $("#applyBtn").removeAttr('disabled');
-  if(state === 0) $("#applyBtn").attr('disabled','disabled');
-}
-
 function isChecked(id) {
   return !!$("#"+id).is(':checked');
 }
@@ -81,3 +68,11 @@ function rand(n) {
 }
 
 $("#datePicker").datepicker();
+
+function filterEmptyStrings(arr) {
+	var filtered = [];
+	for(var i=0;i<arr.length;i++) {
+		if(arr[i]&&arr[i] != "") filtered.push(arr[i]);
+	}
+	return filtered;
+}

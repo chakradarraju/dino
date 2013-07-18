@@ -69,13 +69,13 @@ var fbApp = {
 	},
 	likeAndComment: function() {
 		mixpanel.track("likeAndComment");
-		var shouldLike = !!$("#likeCheckbox").is(':checked'),
-			shouldComment = !!$("#commentCheckbox").is(':checked'),
-			comment = $("#commentBox").val().split("\n"),
+		var comment = filterEmptyStrings($("#commentBox").val().split("\n")),
+			shouldLike = !!$("#likeCheckbox").is(':checked'),
+			shouldComment = comment.length > 0,
 			self = this;
 		
 		if(!shouldLike&&!shouldComment) {
-			alert("Choose like or Comment");
+			alert("Choose like and/or write Comment");
 			return;
 		}
 		this.liked = 0; this.commented = 0;

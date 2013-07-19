@@ -16,9 +16,26 @@ Post.prototype.getHTMLNode = function() {
 }
 
 Post.prototype.render = function() {
-	var jnode = $("<tr><td>"+this.getLabel()+"</td><td>"+this.getInfo()+"</td></tr>");
+	var jnode = $(new EJS({url: 'templates/post.ejs'}).render({
+		label: this.getLabel(),
+		info: this.getInfo(),
+	}));
 	$("td",jnode).click(this.onClick.bind(this));
+	$(".postLike",jnode).click(this.postLikeClick.bind(this));
+	$(".postCommentBox",jnode).click(this.postCommentBoxClick.bind(this));
 	return jnode[0];
+}
+
+Post.prototype.postLikeClick = function(e) {
+	var node = $(".postLike",this.getHTMLNode())[0],
+		stateString = ["Like it", "Don't like it"];
+	node.innerHTML = node.innerHTML === stateString[0] ? stateString[1] : stateString[0];
+	return false;
+}
+
+Post.prototype.postCommentBoxClick = function(e) {
+	e.preventDefault();
+	return false;
 }
 
 Post.prototype.getLabel = function() {
@@ -103,4 +120,34 @@ Post.prototype.replaceVars = function(comment) {
 		if(self["var_"+value]) comment = comment.replace("<"+value+">",self["var_"+value]);
 	});
 	return comment;
+}
+
+Post.prototype.shouldLike = function() {
+	return $(".postLike",this.getHTMLNode())[0].innerHTML === "Don't like it";
+}
+
+Post.prototype.like = function() {
+	if(this.shouldLike()) return;
+	var node = $(".postLike",this.getHTMLNode())[0];
+	node.innerHTML = "Don't like it";
+}
+
+Post.prototype.comment = function(comment) {
+	$(".postCommentBox",this.getHTMLNode()).val(this.replaceVars(comment));
+}
+
+Post.prototype.getLikeUrl = function() {
+	if(!this.shouldLike()) return;
+	return this.id+"/likes?method=POST&format=json";
+}
+
+Post.prototype.getCommentUrl = function() {
+	var comment = encodeURIComponent($(".postCommentBox",this.getHTMLNode()).val());
+	if(!comment) return;
+	return this.id+"/comments?method=POST&format=json&message="+comment;
+}
+
+Post.prototype.clearChanges = function() {
+	$(".postLike",this.getHTMLNode())[0].innerHTML = "Like it";
+	$(".postCommentBox",this.getHTMLNode()).val("");
 }

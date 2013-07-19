@@ -24,10 +24,11 @@
     </div>
     <div class="row span12s">
       <div class="span3">
-        <form id="likeAndComment">
+        <form>
           <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
           <textarea id='commentBox' class="span2"></textarea><br/>
-          <input type='submit' class="btn btn-primary" id='applyBtn' value='Like&Comment' /><br/><br/>
+          <input type='button' class="btn" id='applyBtn' value='Preview' /><br/>
+		  <input type='button' class="btn btn-primary" id='postBtn' value='Post Changes' /><br/><br/>
         </form> 
 
         <input class="span2" size="16" value id="datePicker" />
@@ -69,6 +70,7 @@ mixpanel.init("1a3694b8cc3644303b304d5beb3ba1bd");</script>
 <!-- end Mixpanel -->
 
   <script type="text/javascript" src="js/lib/jquery.js"></script>
+  <script type="text/javascript" src="js/lib/ejs.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
   <script type="text/javascript" src="js/Post.js"></script>

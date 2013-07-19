@@ -67,43 +67,53 @@ var fbApp = {
 			this.prevPost = postId;
 		}
 	},
-	likeAndComment: function() {
-		mixpanel.track("likeAndComment");
-		var comment = filterEmptyStrings($("#commentBox").val().split("\n")),
-			shouldLike = !!$("#likeCheckbox").is(':checked'),
-			shouldComment = comment.length > 0,
-			self = this;
-		
+	applyForSelectedPosts: function(shouldLike, comments) {
+		mixpanel.track("applyForSelectedPosts");
+		var shouldComment = comments.length > 0;
 		if(!shouldLike&&!shouldComment) {
 			alert("Choose like and/or write Comment");
 			return;
 		}
-		this.liked = 0; this.commented = 0;
-		$.each(this.posts,function(index,post) {
+		var count = 0;
+		$.each(this.posts, function(index,post) {
 			if(post.isChecked()) {
-				if(shouldLike&&!post.isLiked(self.name)) self.like(post.id);
-				if(shouldComment&&!post.isCommented(self.name,comment)) self.comment(post.id,post.replaceVars(comment[rand(comment.length)]));
+				count += 1;
+				if(shouldLike) post.like();
+				if(shouldComment) post.comment(comments[rand(comments.length)])
 			}
 		});
-		if(this.queue.length === 0) {
-			alert("Choose atleast 1 post to "+$("#applyBtn").val());
-			return;
-		}
+		if(count === 0) alert("No post selected");
+	},
+	postPendingChanges: function() {
+		mixpanel.track("postPendingChanges");
+		var likeCount = 0,
+			commentCount = 0,
+			self = this;
+		$.each(this.posts, function(index, post) {
+			var likeUrl = post.getLikeUrl(),
+				commentUrl = post.getCommentUrl();
+			if(likeUrl) {
+				self.queue.push($.post("https://graph.facebook.com/"+likeUrl+"&access_token="+self.accessToken));
+				likeCount++;
+			}
+			if(commentUrl) {
+				self.queue.push($.post("https://graph.facebook.com/"+commentUrl+"&access_token="+self.accessToken));
+				commentCount++;
+			}
+		});
+		if(likeCount+commentCount === 0) alert("There are no pending changes to Post");
 		$.when.apply({},this.queue).done(function() {
 			self.queue = [];
+			self.clearChanges();
 			self.selectNone();
-			mixpanel.track("completed",{liked:self.liked,commented:self.commented});
+			mixpanel.track("completed",{liked:likeCount,commented:commentCount});
 			alert("Done");
 		});
 	},
-	like: function(postId) {
-		this.liked++;
-		this.queue.push($.get("https://graph.facebook.com/"+postId+"/likes?method=POST&format=json&access_token="+this.accessToken));
-	},
-	comment: function(postId,comment) {
-		this.commented++;
-		var comment = encodeURIComponent(comment);
-		this.queue.push($.get("https://graph.facebook.com/"+postId+"/comments?method=POST&message="+comment+"&format=json&access_token="+this.accessToken));
+	clearChanges: function() {
+		$.each(this.posts, function(index, post) {
+			post.clearChanges();
+		});
 	},
 	getPostsOnDate: function(date) {
 		if(date.toString() === "Invalid Date") {

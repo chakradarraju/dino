@@ -23,11 +23,14 @@ if(!getVars.access_token) {
   fbApp.init(getVars.access_token);
 }
 
-$("#likeAndComment").bind({
-  "submit": function(e) {
-    e.preventDefault();
-    fbApp.likeAndComment();
-  }
+$("#applyBtn").click(function(e) {
+	var shouldLike = isChecked("likeCheckbox"),
+		comments = filterEmptyStrings($("#commentBox").val().split("\n"));
+	fbApp.applyForSelectedPosts(shouldLike,comments);
+});
+
+$("#postBtn").click(function(e) {
+	fbApp.postPendingChanges();
 });
 
 function isChecked(id) {

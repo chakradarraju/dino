@@ -19,6 +19,7 @@ Post.prototype.render = function() {
 	var jnode = $(new EJS({url: 'templates/post.ejs'}).render({
 		label: this.getLabel(),
 		info: this.getInfo(),
+		imgurl: 'http://graph.facebook.com/'+this.getUserId()+'/picture',
 	}));
 	$("td",jnode).click(this.onClick.bind(this));
 	$(".postLike",jnode).click(this.postLikeClick.bind(this));
@@ -111,6 +112,10 @@ Post.prototype.remove = function() {
 
 Post.prototype.getAuthor = function() {
 	return this._post.from.name;
+}
+
+Post.prototype.getUserId = function() {
+	return this._post.from.id;
 }
 
 Post.prototype.replaceVars = function(comment) {

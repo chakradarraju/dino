@@ -98,7 +98,7 @@ Post.prototype.isCommented = function(userName,comment) {
 	if(!post||!post.comments||!post.comments.data) return false;
 	var comments = post.comments.data;
 	for(var i=0;i<comments.length;i++) {
-		if(comments[i].from.name===userName&&comments[i].message===comment)
+		if(comments[i].from.name===userName&&(!comment||comments[i].message===comment))
 			return true;
 	}
 	return false;
@@ -141,18 +141,24 @@ Post.prototype.comment = function(comment) {
 	$(".postCommentBox",this.getHTMLNode()).val(this.replaceVars(comment));
 }
 
-Post.prototype.getLikeUrl = function() {
-	if(!this.shouldLike()) return;
+Post.prototype.getLikeUrl = function(force) {
+	if(!force && !this.shouldLike()) return;
 	return this.id+"/likes?method=POST&format=json";
 }
 
-Post.prototype.getCommentUrl = function() {
+Post.prototype.getCommentUrl = function(force) {
 	var comment = encodeURIComponent($(".postCommentBox",this.getHTMLNode()).val());
-	if(!comment) return;
+	if(!force && !comment) return;
 	return this.id+"/comments?method=POST&format=json&message="+comment;
 }
 
 Post.prototype.clearChanges = function() {
 	$(".postLike",this.getHTMLNode())[0].innerHTML = "Like it";
 	$(".postCommentBox",this.getHTMLNode()).val("");
+}
+
+Post.prototype.getCommentId = function() {
+	var a = this._post.comments.data[0].id;
+	if(a) return a;
+	return Math.floor(Math.random()*100000);
 }

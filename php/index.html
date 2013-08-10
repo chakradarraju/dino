@@ -2,15 +2,17 @@
 <head>
 	<title>Dino</title>
 	<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<link href="bootstrap/css/datepicker.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 	<div class='container'>
-		<div class='row span12'>
+		<div class='row'>
 			<h1><p class="text-center">Dino</p></h1>
 		</div>
-		<div class='row span12' style="margin-top: 40px">
-			<div class='span6'>
+		<div class='row' style="margin-top: 40px">
+			<div class='col-lg-6'>
 				<div class="well well-small">
+					<button class="btn btn-success" id="showInterface">Show Dashboard for selected and custom response for different posts</button>
 					<h2>Instructions:</h2>
 					<ul>
 						<li>Give permission by clicking on the image on right side.</li>
@@ -22,12 +24,28 @@
 				   	chakradarraju [at] gmail [dot] com, or ping me at <a href='http://www.facebook.com/chakradarraju/'>Chakradar Raju</a> :)
 				</div>
 			</div>
-			<div class="span5 ">
-				<a href="accessToken.php"><img src="img/fb-hpybday.jpeg" /></a><br/>
-					<small>
-						Dino needs your permission to post on your behalf, when Facebook asks for giving permission press Okay.<br/>
-						Don't worry the permission will be used only for liking and commenting on the post that you manually select.<br/>
-					</small>
+			<div class="col-lg-6">
+				<p style="text-align:center;">OR</p>
+				<div class="well">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" id="like" checked />
+							like and comment: 
+						</span>
+						<input type="text" id="comment" class="form-control" />
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">for all posts on </span>
+						<input type="text" id="datepicker" class="form-control" />
+						<span class="input-group-btn">
+							<button type="button" id="goBtn" class="btn btn-default">Go</button>
+						</span>
+					</div>
+				</div>
+				<small>
+					Dino needs your permission to post on your behalf, when Facebook asks for giving permission press Okay.<br/>
+					Don't worry the permission will be used only for liking and commenting on the post that you manually select.<br/>
+				</small>
 			</div>
 		</div>
 	</div>
@@ -38,5 +56,24 @@ b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
 mixpanel.init("1a3694b8cc3644303b304d5beb3ba1bd");</script>
 <!-- end Mixpanel -->
 <script type="text/javascript">mixpanel.track("Loaded page");</script>
+<script type="text/javascript" src="js/lib/jquery.js"></script>
+<script type="text/javascript" src="js/lib/jquery.cookie.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	$("#showInterface").click(function() {
+		window.location = 'accessToken.php';
+	})
+	$("#goBtn").click(function() {
+		if(!confirm("Do you want to like/comment "+$("#comment").val()+" for all posts on "+$("#datepicker").val()+"?"))
+			return;
+		$.each(["like","comment","datepicker"], function(index, value) {
+			$.cookie(value, $("#"+value).val());
+		});
+		window.location = 'accessToken.php?all=true';
+	});
+	$("#datepicker").datepicker();
+</script>
+
 </body>
 </html>

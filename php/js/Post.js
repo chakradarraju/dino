@@ -29,7 +29,7 @@ Post.prototype.render = function() {
 
 Post.prototype.postLikeClick = function(e) {
 	var node = $(".postLike",this.getHTMLNode())[0],
-		stateString = ["Like it", "Don't like it"];
+		stateString = ["Like", "Like (Undo)"];
 	node.innerHTML = node.innerHTML === stateString[0] ? stateString[1] : stateString[0];
 	return false;
 }
@@ -61,7 +61,7 @@ Post.prototype.isChecked = function() {
 }
 
 Post.prototype.toggle = function() {
-	this.domNode.className = ["","info"][(this.state = !this.state)+0];
+	this.domNode.className = ["","warning"][(this.state = !this.state)+0];
 }
 
 Post.prototype.check = function() {
@@ -128,13 +128,13 @@ Post.prototype.replaceVars = function(comment) {
 }
 
 Post.prototype.shouldLike = function() {
-	return $(".postLike",this.getHTMLNode())[0].innerHTML === "Don't like it";
+	return $(".postLike",this.getHTMLNode())[0].innerHTML === "Like (Undo)";
 }
 
 Post.prototype.like = function() {
 	if(this.shouldLike()) return;
 	var node = $(".postLike",this.getHTMLNode())[0];
-	node.innerHTML = "Don't like it";
+	node.innerHTML = "Like (Undo)";
 }
 
 Post.prototype.comment = function(comment) {
@@ -153,7 +153,7 @@ Post.prototype.getCommentUrl = function(force) {
 }
 
 Post.prototype.clearChanges = function() {
-	$(".postLike",this.getHTMLNode())[0].innerHTML = "Like it";
+	$(".postLike",this.getHTMLNode())[0].innerHTML = "Like";
 	$(".postCommentBox",this.getHTMLNode()).val("");
 }
 

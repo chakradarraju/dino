@@ -19,7 +19,7 @@
   <div id='content' class='container'>
     <div class="row col-lg-12" style="border: black 2px;">
       <div class="hero">
-        <h1><p class="text-center">Dino</p></h1>
+        <h1><p class="text-center">Dino - Facebook Birthday Responder</p></h1>
       </div>
     </div>
     <div class="row col-lg-12" id="progressBoard">
@@ -29,15 +29,15 @@
       </div>
     </div>
     <div class="row col-lg-12" id="dashboard">
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <form>
           <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
-          <textarea id='commentBox' class="col-lg-2"></textarea><br/>
+          <textarea id='commentBox'></textarea><br/>
           <input type='button' class="btn" id='applyBtn' value='Preview' /><br/>
 		  <input type='button' class="btn btn-primary" id='postBtn' value='Post Changes' /><br/><br/>
         </form> 
 
-        <input class="col-lg-2" size="16" value id="datePicker" />
+        <input size="16" value id="datePicker" />
         <input type="button" class="btn btn-info" value="Fetch Posts on this date" onclick="fbApp.getPostsOnDate(new Date($('#datePicker').val()))" /><br/><br/>
 
         <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/><br/>
@@ -62,8 +62,8 @@
 
       </div>
       <div class="col-lg-8">
-        <table class='table table-striped col-lg-8'><tbody id='postlist'></tbody></table>
-        <table class='table col-lg-8'><tbody><tr><td><input type="button" class="btn col-lg-8" onclick="fbApp.getMorePosts()" value="Get More Posts" /></td></tr></tbody></table>
+        <table class='table table-striped col-lg-12'><tbody id='postlist'></tbody></table>
+        <table class='table col-lg-12'><tbody><tr><td><input type="button" class="btn col-lg-12" onclick="fbApp.getMorePosts()" value="Get More Posts" /></td></tr></tbody></table>
       </div>
     </div>
   </div>

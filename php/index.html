@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Dino</title>
+	<title>Dino - Facebook Birthday Responder</title>
 	<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 	<link href="bootstrap/css/datepicker.css" type="text/css" rel="stylesheet" />
 </head>
@@ -10,36 +10,40 @@
 			<h1><p class="text-center">Dino - Facebook Birthday Responder</p></h1>
 		</div>
 		<div class='row' style="margin-top: 40px">
-			<div class='col-lg-6'>
-				<div class="well well-small">
-					For those who want to manually choose posts to respond and write different response for different posts:
-					<button class="btn btn-success" id="showInterface">Show Dashboard</button>
-					If you have any feedback, don't hesitate to send it to<br/>
-				   	chakradarraju [at] gmail [dot] com, or ping me at <a href='http://www.facebook.com/chakradarraju/'>Chakradar Raju</a> :)
-				</div>
-			</div>
 			<div class="col-lg-6">
 				<div class="well">
-					For those who want to just like all birthday wishes or leave same response:
-					<div class="input-group">
-						<span class="input-group-addon">
-							<input type="checkbox" id="like" checked />
-							like and comment: 
-						</span>
-						<input type="text" id="comment" class="form-control" />
-					</div>
-					<div class="input-group">
-						<span class="input-group-addon">for all posts on </span>
-						<input type="text" id="datepicker" class="form-control" />
-						<span class="input-group-btn">
-							<button type="button" id="goBtn" class="btn btn-default">Go</button>
-						</span>
-					</div>
+					<p>For those who want to just like all birthday wishes and/or leave simple response:</p>
+					<p>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<input type="checkbox" id="like" checked />
+								like and comment: 
+							</span>
+							<input type="text" id="comment" class="form-control" />
+						</div>
+						<div class="input-group">
+							<span class="input-group-addon">for all posts on </span>
+							<input type="text" id="datepicker" class="form-control" />
+							<span class="input-group-btn">
+								<button type="button" id="goBtn" class="btn btn-default">Go</button>
+							</span>
+						</div>
+					</p>
+					In comment you can use "&lt;firstname&gt;", "&lt;lastname&gt;", "&lt;name&gt;"<br/>
+					Eg: "Thank you &lt;firstname&gt; :)"
 				</div>
 				<small>
 					Dino needs your permission to post on your behalf, when Facebook asks for giving permission press Okay.<br/>
 					Don't worry the permission will be used only for liking and commenting on the post that you manually select.<br/>
 				</small>
+			</div>
+			<div class='col-lg-6'>
+				<div class="well well-small">
+					For those who want to manually choose posts and/or write different response for different posts:<br/>
+					<p style="text-align:center;"><button class="btn btn-success" id="showInterface">Show Dashboard</button></p><br/>
+					If you have any feedback, don't hesitate to send it to<br/>
+				   	chakradarraju [at] gmail [dot] com, or ping me at <a href='http://www.facebook.com/chakradarraju/'>Chakradar Raju</a> :)
+				</div>
 			</div>
 		</div>
 	</div>

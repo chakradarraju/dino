@@ -4,7 +4,6 @@ var fbApp = {
 			self = this;
 		this.accessToken = accessToken;
 		this.posts = [];
-		this.queue = [];
 		this.fetchUserData().then(function() {
 			def.resolve();
 			self.initUser();
@@ -95,16 +94,17 @@ var fbApp = {
 		mixpanel.track("postPendingChanges");
 		var likeCount = 0,
 			commentCount = 0,
+			requests = [],
 			self = this;
 		$.each(this.posts, function(index, post) {
 			var likeUrl = post.getLikeUrl(),
 				commentUrl = post.getCommentUrl();
 			if(likeUrl) {
-				self.queue.push($.post("https://graph.facebook.com/"+likeUrl+"&access_token="+self.accessToken));
+				requests.push($.post("https://graph.facebook.com/"+likeUrl+"&access_token="+self.accessToken));
 				likeCount++;
 			}
 			if(commentUrl) {
-				self.queue.push($.post("https://graph.facebook.com/"+commentUrl+"&access_token="+self.accessToken));
+				requests.push($.post("https://graph.facebook.com/"+commentUrl+"&access_token="+self.accessToken));
 				commentCount++;
 			}
 		});

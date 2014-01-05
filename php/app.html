@@ -80,7 +80,8 @@ mixpanel.init("1a3694b8cc3644303b304d5beb3ba1bd");</script>
 <!-- custom script to skip dev hits -->
 <script type="text/javascript">
 	if ($.cookie('dev')) {
-		mixpanel.track = function() {}
+		console.log("disabling mixpanel");
+		mixpanel.disable();
 	}
 </script>
   <script type="text/javascript" src="js/lib/ejs.js"></script>

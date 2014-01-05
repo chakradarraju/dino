@@ -97,6 +97,10 @@ $("#postBtn").click(function(e) {
 	fbApp.postPendingChanges();
 });
 
+$("#feedbackBtn").click(function(e) {
+	window.open("https://chakradarraju.typeform.com/to/V9EN2H").focus();
+});
+
 function isChecked(id) {
   return !!$("#"+id).is(':checked');
 }

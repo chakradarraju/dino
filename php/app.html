@@ -12,6 +12,13 @@
     -webkit-user-select: none;
     -moz-user-select: none;
   }
+  #feedbackDiv {
+	position: fixed;
+	right: 30px;
+	top: 30px;
+	margin: 0;
+	padding: 0;
+  }
   </style>
 </head>
 <body>
@@ -65,6 +72,13 @@
         <table class='table table-striped col-lg-12'><tbody id='postlist'></tbody></table>
 		<span class='col-lg-12' style="text-align:center;">To load posts, choose a date and click "Fetch posts on Date"</span>
       </div>
+
+	  <div id="feedbackDiv">
+      	<button type="button" class="btn btn-default" id="feedbackBtn">
+		  <span class="glyphicon glyphicon-star"></span> Feedback <span class="glyphicon glyphicon-star-empty"></span><br/>
+		  <small> or anything you want to<br/> bring to my attention </small>
+		</button>
+	  </div>
     </div>
   </div>
 

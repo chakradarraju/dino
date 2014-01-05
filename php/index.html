@@ -3,6 +3,15 @@
 	<title>Dino - Facebook Birthday Responder</title>
 	<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 	<link href="bootstrap/css/datepicker.css" type="text/css" rel="stylesheet" />
+	<style>
+	  #feedbackDiv {
+		position: fixed;
+		right: 30px;
+		top: 30px;
+		margin: 0;
+		padding: 0;
+	  }
+	</style>
 </head>
 <body>
 	<div class='container'>
@@ -32,21 +41,25 @@
 					In comment you can use "&lt;firstname&gt;", "&lt;lastname&gt;", "&lt;name&gt;"<br/>
 					Eg: "Thank you &lt;firstname&gt; :)"
 				</div>
-				<small>
-					Dino needs your permission to post on your behalf, when Facebook asks for giving permission press Okay.<br/>
-					Don't worry the permission will be used only for liking and commenting on the post that you manually select.<br/>
-				</small>
 			</div>
 			<div class='col-lg-6'>
 				<div class="well well-small">
 					For those who want to manually choose posts and/or write different response for different posts:<br/>
 					<p style="text-align:center;"><button class="btn btn-success" id="showInterface">Show Dashboard</button></p><br/>
-					If you have any feedback, don't hesitate to send it to<br/>
-				   	chakradarraju [at] gmail [dot] com, or ping me at <a href='http://www.facebook.com/chakradarraju/'>Chakradar Raju</a> :)
 				</div>
+        <small>
+          Dino needs your permission to post on your behalf, when Facebook asks for giving permission press Okay.<br/>
+          Don't worry the permission will be used only for liking and commenting on the post that you manually select.<br/>
+        </small>
 			</div>
 		</div>
 	</div>
+<div id="feedbackDiv">
+  <button type="button" class="btn btn-default" id="feedbackBtn">
+  <span class="glyphicon glyphicon-star"></span> Feedback <span class="glyphicon glyphicon-star-empty"></span><br/>
+  <small> or anything you want<br/> to let me know </small>
+  </button>
+</div>
 <!-- start Mixpanel -->
 <script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
 typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
@@ -66,6 +79,9 @@ mixpanel.init("1a3694b8cc3644303b304d5beb3ba1bd");</script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
+  $("#feedbackBtn").click(function(e) {
+    window.open("https://chakradarraju.typeform.com/to/V9EN2H").focus();
+  });
 	$("#showInterface").click(function() {
 		window.location = 'accessToken.php';
 	})

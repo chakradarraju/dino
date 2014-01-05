@@ -53,9 +53,15 @@ typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var
 b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
 mixpanel.init("1a3694b8cc3644303b304d5beb3ba1bd");</script>
 <!-- end Mixpanel -->
-<script type="text/javascript">mixpanel.track("Loaded page");</script>
 <script type="text/javascript" src="js/lib/jquery.js"></script>
 <script type="text/javascript" src="js/lib/jquery.cookie.js"></script>
+<!-- custom script to skip dev hits -->
+<script type="text/javascript">
+	if ($.cookie('dev')) {
+		mixpanel.track = function() {}
+	}
+</script>
+<script type="text/javascript">mixpanel.track("Loaded page");</script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">

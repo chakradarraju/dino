@@ -77,6 +77,12 @@ mixpanel.init("1a3694b8cc3644303b304d5beb3ba1bd");</script>
 
   <script type="text/javascript" src="js/lib/jquery.js"></script>
   <script type="text/javascript" src="js/lib/jquery.cookie.js"></script>
+<!-- custom script to skip dev hits -->
+<script type="text/javascript">
+	if ($.cookie('dev')) {
+		mixpanel.track = function() {}
+	}
+</script>
   <script type="text/javascript" src="js/lib/ejs.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>

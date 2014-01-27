@@ -12,26 +12,39 @@
     -webkit-user-select: none;
     -moz-user-select: none;
   }
+  #feedbackDiv {
+	position: fixed;
+	right: 30px;
+	top: 30px;
+	margin: 0;
+	padding: 0;
+  }
   </style>
 </head>
 <body>
 
   <div id='content' class='container'>
-    <div class="row span12" style="border: black 2px;">
+    <div class="row col-lg-12" style="border: black 2px;">
       <div class="hero">
-        <h1><p class="text-center">Dino</p></h1>
+        <h1><p class="text-center">Dino - Facebook Birthday Responder</p></h1>
       </div>
     </div>
-    <div class="row span12s">
-      <div class="span3">
+    <div class="row col-lg-12" id="progressBoard">
+      <div class="progress progress-striped active" id="progress">
+        <div class="progress-bar progress-bar-success" id="successProgress"></div>
+        <div class="progress-bar progress-bar-danger" id="failureProgress"></div>
+      </div>
+    </div>
+    <div class="row col-lg-12" id="dashboard">
+      <div class="col-lg-4">
         <form>
           <label><input type='checkbox' checked="checked" id='likeCheckbox' /> Like</label>
-          <textarea id='commentBox' class="span2"></textarea><br/>
+          <textarea id='commentBox'></textarea><br/>
           <input type='button' class="btn" id='applyBtn' value='Preview' /><br/>
 		  <input type='button' class="btn btn-primary" id='postBtn' value='Post Changes' /><br/><br/>
         </form> 
 
-        <input class="span2" size="16" value id="datePicker" />
+        <input size="16" value id="datePicker" />
         <input type="button" class="btn btn-info" value="Fetch Posts on this date" onclick="fbApp.getPostsOnDate(new Date($('#datePicker').val()))" /><br/><br/>
 
         <input type="button" class="btn btn-success" value="Select All" onclick="fbApp.selectAll()" /><br/><br/>
@@ -55,10 +68,17 @@
         </div>
 
       </div>
-      <div class="span8">
-        <table class='table table-striped span8'><tbody id='postlist'></tbody></table>
-        <table class='table span8'><tbody><tr><td><input type="button" class="btn span8" onclick="fbApp.getMorePosts()" value="Get More Posts" /></td></tr></tbody></table>
+      <div class="col-lg-8">
+        <table class='table table-striped col-lg-12'><tbody id='postlist'></tbody></table>
+		<span class='col-lg-12' style="text-align:center;">To load posts, choose a date and click "Fetch posts on Date"</span>
       </div>
+
+	  <div id="feedbackDiv">
+      	<button type="button" class="btn btn-default" id="feedbackBtn">
+		  <span class="glyphicon glyphicon-star"></span> Feedback <span class="glyphicon glyphicon-star-empty"></span><br/>
+		  <small> or anything you want<br/> to let me know </small>
+		</button>
+	  </div>
     </div>
   </div>
 
@@ -70,6 +90,14 @@ mixpanel.init("1a3694b8cc3644303b304d5beb3ba1bd");</script>
 <!-- end Mixpanel -->
 
   <script type="text/javascript" src="js/lib/jquery.js"></script>
+  <script type="text/javascript" src="js/lib/jquery.cookie.js"></script>
+<!-- custom script to skip dev hits -->
+<script type="text/javascript">
+	if ($.cookie('dev')) {
+		console.log("disabling mixpanel");
+		mixpanel.disable();
+	}
+</script>
   <script type="text/javascript" src="js/lib/ejs.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>

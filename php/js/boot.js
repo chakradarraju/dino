@@ -7,8 +7,8 @@ function byId(id) {
 }
 
 function parseForGetVars() {
-  var getPart =
-  window.location.href.substring(0,window.location.href.indexOf('#'));
+  var hashLoc = window.location.href.indexOf('#'),
+      getPart = hashLoc === -1 ? window.location.href : window.location.href.substring(0,hashLoc);
   getPart.replace(/[?&]+([^=&]+)=([^&]*)/gi,
     function(m,key,value) {
       getVars[key] = value;
@@ -20,7 +20,71 @@ if(!getVars.access_token) {
   gotoAuthPage();
 } else {
   mixpanel.track("Got access_token");
-  fbApp.init(getVars.access_token);
+  var initDef = fbApp.init(getVars.access_token);
+  if(getVars.all === "true") {
+    showProgress();
+    initDef.then(function() {
+      fbApp.getPostsOnDate(new Date($.cookie('datepicker'))).then(function(posts) {
+        var shouldLike = $.cookie('like') === "on",
+            shouldComment = $.cookie('comment') !== "",
+            comment = $.cookie('comment'),
+            requests = [];
+
+        $.each(posts, function(index, post) {
+          if(shouldLike) requests.push("https://graph.facebook.com/"+post.getLikeUrl(true)+"&access_token="+getVars.access_token);
+          if(shouldComment && !post.isCommented(fbApp.name)) {
+            var customComment = encodeURIComponent(post.replaceVars(comment));
+            requests.push("https://graph.facebook.com/"+post.id+"/comments?method=POST&format=json&message="+customComment+"&access_token="+getVars.access_token);
+          }
+        });
+        processRequests(requests);
+      });
+    });
+  } else {
+    showDashboard();
+  }
+}
+
+function showDashboard() {
+  $("#dashboard").show();
+  $("#progressBoard").hide();
+}
+
+function showProgress() {
+  $("#dashboard").hide();
+  $("#progressBoard").show();
+}
+
+function processRequests(arr) {
+  var total = arr.length,
+      success = 0,
+      failure = 0,
+      def = $.Deferred();
+
+  function doneFn() {
+    success++;
+  }
+
+  function failFn() {
+    failure++;
+  }
+
+  function update() {
+    $("#successProgress").width(success/total*100 + "%");
+    $("#failureProgress").width(failure/total*100 + "%");
+    if(success+failure === total) {
+      $("#progress").removeClass("active");
+      mixpanel.track("completed",{total:arr.length});
+      alert("Done");
+      def.resolve();
+    }
+  }
+
+  $.each(arr, function(index, value) {
+    $.post(value).done(doneFn).fail(failFn).always(update);
+  });
+
+  return def;
 }
 
 $("#applyBtn").click(function(e) {
@@ -31,6 +95,10 @@ $("#applyBtn").click(function(e) {
 
 $("#postBtn").click(function(e) {
 	fbApp.postPendingChanges();
+});
+
+$("#feedbackBtn").click(function(e) {
+	window.open("https://chakradarraju.typeform.com/to/V9EN2H").focus();
 });
 
 function isChecked(id) {

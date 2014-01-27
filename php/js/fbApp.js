@@ -1,12 +1,17 @@
 var fbApp = {
 	init: function(accessToken) {
+		var def = $.Deferred(),
+			self = this;
 		this.accessToken = accessToken;
 		this.posts = [];
-		this.queue = [];
-		this.fetchUserData().then(this.initUser.bind(this));
+		this.fetchUserData().then(function() {
+			def.resolve();
+			self.initUser();
+		});
 		this.prevPost = null;
 		this.liked = 0;
 		this.commented = 0;
+		return def;
 	},
 	fetchUserData: function() {
 		var self = this,
@@ -85,29 +90,28 @@ var fbApp = {
 		if(count === 0) alert("No post selected");
 	},
 	postPendingChanges: function() {
+		showProgress();
 		mixpanel.track("postPendingChanges");
 		var likeCount = 0,
 			commentCount = 0,
+			requests = [],
 			self = this;
 		$.each(this.posts, function(index, post) {
 			var likeUrl = post.getLikeUrl(),
 				commentUrl = post.getCommentUrl();
 			if(likeUrl) {
-				self.queue.push($.post("https://graph.facebook.com/"+likeUrl+"&access_token="+self.accessToken));
+				requests.push($.post("https://graph.facebook.com/"+likeUrl+"&access_token="+self.accessToken));
 				likeCount++;
 			}
 			if(commentUrl) {
-				self.queue.push($.post("https://graph.facebook.com/"+commentUrl+"&access_token="+self.accessToken));
+				requests.push($.post("https://graph.facebook.com/"+commentUrl+"&access_token="+self.accessToken));
 				commentCount++;
 			}
 		});
 		if(likeCount+commentCount === 0) alert("There are no pending changes to Post");
-		$.when.apply({},this.queue).done(function() {
-			self.queue = [];
+		else processRequests(requests).then(function() {
 			self.clearChanges();
 			self.selectNone();
-			mixpanel.track("completed",{liked:likeCount,commented:commentCount});
-			alert("Done");
 		});
 	},
 	clearChanges: function() {
@@ -127,7 +131,8 @@ var fbApp = {
 			fetchURL = "https://graph.facebook.com/"+this.username+"/feed?access_token="+this.accessToken+"&since="+fromDate+"&until="+toDate,
 			fetchedPosts = [],
 			self = this,
-			count = 0;
+			count = 0
+			def = $.Deferred();
 		(function fetchNextPage() {
 			self.getPosts(fetchURL, function(response) {
 				fetchURL = response.paging.next;
@@ -137,11 +142,14 @@ var fbApp = {
 				});
 				if(isAllPostsOnDate)
 					fetchNextPage();
+				else
+					def.resolve(self.posts);
 				$("#numPosts").html(self.posts.length);
 			}, function(post) {
 				return dateEquals(new Date(post.created_time),date);
 			});
 		})();
+		return def;
 	},
 	getPosts: function(fetchURL,callback,filterFn) {
 		var self = this,

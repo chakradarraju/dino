@@ -125,6 +125,8 @@ var fbApp = {
 			alert("Please choose a valid date");
 			return;
 		}
+		//show loading icon
+		$('#loading').fadeIn();
 		mixpanel.track("getPostsOnDate");
 		var fromDate = encodeURIComponent(date.toGMTString()),
 			toDate = encodeURIComponent(nextDay(date).toGMTString()),
@@ -133,6 +135,10 @@ var fbApp = {
 			self = this,
 			count = 0
 			def = $.Deferred();
+			def.done(function(){
+				//hide loading icon
+				$('#loading').fadeOut();
+			});
 		(function fetchNextPage() {
 			self.getPosts(fetchURL, function(response) {
 				fetchURL = response.paging.next;

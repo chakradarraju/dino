@@ -98,7 +98,7 @@ $("#postBtn").click(function(e) {
 });
 
 $("#feedbackBtn").click(function(e) {
-	window.open("https://chakradarraju.typeform.com/to/V9EN2H").focus();
+	window.open("https://docs.google.com/forms/d/1Gu5LG8aE7i1Hsqb_aD3pSIt88H4LBv5ErRTM9kHrb5w/viewform?usp=send_form").focus();
 });
 
 function isChecked(id) {
